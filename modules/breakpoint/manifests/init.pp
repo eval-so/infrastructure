@@ -10,7 +10,7 @@ class breakpoint::compilation_node {
 
   # Rubies.
   include rvm
-  if $rvm_installed == true
+  if $rvm_installed == true {
     rvm_system_ruby {
       'ruby-1.9.3-p125':
         ensure => present,
@@ -42,7 +42,8 @@ class breakpoint::compilation_node {
 
 class breakpoint::frontend {
   package {[
-    'scala'
+    'scala',
+    'git'
   ]: ensure => present }
 
   file { [
@@ -53,12 +54,21 @@ class breakpoint::frontend {
     owner => apache,
     group => apache,
     mode => 644,
-    requires => Package['httpd']
+    require => Package['httpd']
   }
 
   exec { "pull_breakpoint_mainsite":
+    cwd     => "/srv/www/",
     command => "/usr/bin/git clone git://github.com/breakpoint-eval/breakpoint.git",
     creates => "/srv/www/breakpoint",
-    requires => File['/srv/www']
+    require => [File['/srv/www'], Package['git']]
+  }
+
+  file { "/srv/www/breakpoint":
+    require => Exec['pull_breakpoint_mainsite'],
+    owner   => apache,
+    group   => apache,
+    mode    => 644,
+    recurse => true
   }
 }

@@ -3,6 +3,6 @@ class httpd::server {
   service { 'httpd':
     ensure => running,
     enable => true,
-    requires => Package['httpd']
+    require => Package['httpd']
   }
 }
