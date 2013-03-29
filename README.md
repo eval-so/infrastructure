@@ -1,8 +1,7 @@
 # Breakpoint Infrastructure
 
 This repo contains public (only) configuration files and scripts for our
-production infrastructure. The structure of this repo is that of a typical
-Puppet tree.
+production infrastructure. We use Ansible.
 
 **NOTE: Only public, non-sensitive files should be committed here.**
 **This repo is public.**
@@ -39,13 +38,13 @@ CC BY.
   href="http://creativecommons.org/licenses/by/3.0/deed.en_US">
   Creative Commons Attribution 3.0 Unported License</a>.
 
-### Puppet Tree/Other configurations
+### Config files
 
 3-Clause BSD:
 
 ```
-Copyright (c) 2012, Ricky Elrod <ricky@elrod.me>
-                    Other respective Breakpoint contributors.
+Copyright (c) 2013, Ricky Elrod <ricky@elrod.me> and
+                    Other contributors.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

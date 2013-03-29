@@ -1,0 +1,44 @@
+- name: Deploy Frontend to a node
+  user: root
+  hosts: $target
+  tasks:
+    - name: Get SBT rpm
+      command: creates=/root/sbt.rpm curl -Lo /root/sbt.rpm http://scalasbt.artifactoryonline.com/scalasbt/sbt-native-packages/org/scala-sbt/sbt/0.12.2/sbt.rpm
+
+    - name: Install Frontend dependencies
+      yum: state=present name=$item
+      with_items:
+        - tmux
+        - git
+        - nginx
+        - java-1.7.0-openjdk
+        - java-1.7.0-openjdk-devel
+        - /root/sbt.rpm
+
+    # These are separate from the above so that they're easier to split off
+    # when BCS runs on a non-frontend node.
+    - name: Install BCS dependencies
+      yum: state=present name=$item
+      with_items:
+        - policycoreutils-sandbox
+        - java-1.7.0-openjdk
+        - scala
+        - ruby
+
+    - name: Put nginx proxy config in place
+      template: src=files/nginx/frontend.conf dest=/etc/nginx/conf.d/frontend.conf
+
+    - name: Pull latest Frontend code
+      git: repo=git://github.com/breakpoint-eval/frontend.git dest=/srv/www/frontend
+
+    - name: Nuke .sbt/staging to pull latest git dependencies (SBT bug)
+      command: rm -rf /root/.sbt/staging
+
+    - name: Update Frontend dependencies
+      shell: chdir=/srv/www/frontend _JAVA_OPTIONS="-Xms256m -Xmx512m" sbt update
+
+    - name: Start nginx
+      command: service nginx start
+
+    - name: Set iptables
+      template: src=files/iptables dest=/etc/sysconfig/iptables
