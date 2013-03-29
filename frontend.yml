@@ -29,7 +29,7 @@
       template: src=files/nginx/frontend.conf dest=/etc/nginx/conf.d/frontend.conf
 
     - name: Pull latest Frontend code
-      git: repo=git://github.com/breakpoint-eval/frontend.git dest=/srv/www/frontend
+      git: repo=git://github.com/eval-gd/frontend.git dest=/srv/www/frontend
 
     - name: Nuke .sbt/staging to pull latest git dependencies (SBT bug)
       command: rm -rf /root/.sbt/staging
