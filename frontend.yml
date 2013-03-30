@@ -3,7 +3,7 @@
   hosts: $target
   tasks:
     - name: Get SBT rpm
-      command: creates=/root/sbt.rpm curl -Lo /root/sbt.rpm http://scalasbt.artifactoryonline.com/scalasbt/sbt-native-packages/org/scala-sbt/sbt/0.12.2/sbt.rpm
+      command: creates=/root/sbt.rpm curl -Lo /root/sbt.rpm http://scalasbt.artifactoryonline.com/scalasbt/sbt-native-packages/org/scala-sbt/sbt/0.12.3/sbt.rpm
 
     - name: Install Frontend dependencies
       yum: state=present name=$item
