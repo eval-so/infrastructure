@@ -24,6 +24,10 @@
         - java-1.7.0-openjdk
         - scala
         - ruby
+        - gcc
+        - gcc-c++
+      tags:
+        - bcs-dependencies
 
     - name: Put nginx proxy config in place
       template: src=files/nginx/frontend.conf dest=/etc/nginx/conf.d/frontend.conf
