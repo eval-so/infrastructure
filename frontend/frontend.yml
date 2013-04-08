@@ -8,6 +8,8 @@
     - name: Install Frontend dependencies
       yum: state=present name=$item
       with_items:
+        - denyhosts
+        - python-bucky
         - tmux
         - git
         - nginx
@@ -41,8 +43,18 @@
     - name: Update Frontend dependencies
       shell: chdir=/srv/www/frontend _JAVA_OPTIONS="-Xms256m -Xmx512m" sbt update
 
-    - name: Start nginx
-      command: service nginx start
+    - name: Configure Bucky
+      template: src=files/bucky/bucky.conf dest=/etc/bucky/bucky.conf
+
+    - name: Add Bucky to systemd
+      template: src=files/bucky/bucky.service dest=/etc/systemd/system/bucky.service
+
+    - name: Start services
+      shell: service $item start && chkconfig $item on
+      with_items:
+        - nginx
+        - denyhosts
+        - bucky
 
     - name: Set iptables
       template: src=files/iptables dest=/etc/sysconfig/iptables

@@ -1,0 +1,11 @@
+[Unit]
+Description=bucky metrics collector/aggregator
+After=graphite_carbon_cache.service collectd.service
+
+[Service]
+User=root
+Group=root
+ExecStart=/usr/bin/bucky /etc/bucky/bucky.conf
+
+[Install]
+WantedBy=multi-user.target

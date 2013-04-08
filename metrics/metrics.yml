@@ -1,0 +1,46 @@
+- name: Setup Graphite and Carbon
+  user: root
+  hosts: $target
+  tasks:
+    - name: Update everything
+      command: yum update -y
+
+    - name: Install packages
+      yum: state=present name=$item
+      with_items:
+        - httpd # Because WSGI works automatically.
+        - python-carbon
+        - graphite-web
+        - collectd
+
+    - name: Set SELinux to Permissive
+      command: /sbin/setenforce 0
+
+    - name: Set SELinux to Permissive permanently
+      lineinfile: dest=/etc/selinux/config regexp=^SELINUX= line=SELINUX=permissive
+
+    - name: Allow things to connect to Apache
+      template: src=files/httpd/000-allow-connections.conf dest=/etc/httpd/conf.d/000-allow-connections.conf
+
+    - name: Configure graphite-web in Apache
+      template: src=files/httpd/graphite-web.conf dest=/etc/httpd/conf.d/graphite-web.conf
+
+    - name: Create a file for the graphite-web database
+      shell: creates=/var/lib/graphite-web/graphite.db touch /var/lib/graphite-web/graphite.db && chown apache.apache /var/lib/graphite-web/graphite.db
+
+    - name: Configure graphite-web
+      template: src=files/graphite-web/local_settings.py dest=/etc/graphite-web/local_settings.py
+
+    - name: Configure Carbon
+      template: src=files/carbon/carbon.conf dest=/etc/carbon/carbon.conf
+
+    - name: Start services and enable them at boot
+      shell: systemctl start $item.service && systemctl enable $item.service
+      with_items:
+        - httpd
+        - carbon-cache
+        - carbon-aggregator
+        - collectd
+
+    - name: Set iptables
+      template: src=files/iptables dest=/etc/sysconfig/iptables
