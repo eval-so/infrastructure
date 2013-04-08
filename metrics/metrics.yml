@@ -6,18 +6,18 @@
       command: yum update -y
 
     - name: Install packages
-      yum: state=present name=$item
+      yum: state=present enablerepo=updates-testing name=$item
       with_items:
         - httpd # Because WSGI works automatically.
         - python-carbon
         - graphite-web
         - collectd
 
-    - name: Set SELinux to Permissive
-      command: /sbin/setenforce 0
+    #- name: Set SELinux to Permissive
+    #  command: /sbin/setenforce 0
 
-    - name: Set SELinux to Permissive permanently
-      lineinfile: dest=/etc/selinux/config regexp=^SELINUX= line=SELINUX=permissive
+    #- name: Set SELinux to Permissive permanently
+    #  lineinfile: dest=/etc/selinux/config regexp=^SELINUX= line=SELINUX=permissive
 
     - name: Allow things to connect to Apache
       template: src=files/httpd/000-allow-connections.conf dest=/etc/httpd/conf.d/000-allow-connections.conf
