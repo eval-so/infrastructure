@@ -2,16 +2,15 @@
   user: root
   hosts: $target
   tasks:
+    - include: ../global/global.yml
+
     - name: Get SBT rpm
       command: creates=/root/sbt.rpm curl -Lo /root/sbt.rpm http://scalasbt.artifactoryonline.com/scalasbt/sbt-native-packages/org/scala-sbt/sbt/0.12.3/sbt.rpm
 
     - name: Install Frontend dependencies
       yum: state=present name=$item
       with_items:
-        - denyhosts
-        - python-bucky
-        - tmux
-        - git
+        - collectd-web
         - nginx
         - java-1.7.0-openjdk
         - java-1.7.0-openjdk-devel
@@ -31,30 +30,28 @@
       tags:
         - bcs-dependencies
 
+    - name: Create an evalso user
+      command: creates=/home/evalso useradd evalso
+
     - name: Put nginx proxy config in place
       template: src=files/nginx/frontend.conf dest=/etc/nginx/conf.d/frontend.conf
 
     - name: Pull latest Frontend code
-      git: repo=git://github.com/eval-gd/frontend.git dest=/srv/www/frontend
+      git: repo=git://github.com/eval-so/frontend.git dest=/srv/www/frontend
 
-    - name: Nuke .sbt/staging to pull latest git dependencies (SBT bug)
-      command: rm -rf /root/.sbt/staging
+    - name: Chown Frontend code to evalso
+      command: chown -R evalso.evalso /srv/www/frontend
 
-    - name: Update Frontend dependencies
-      shell: chdir=/srv/www/frontend _JAVA_OPTIONS="-Xms256m -Xmx512m" sbt update
-
-    - name: Configure Bucky
-      template: src=files/bucky/bucky.conf dest=/etc/bucky/bucky.conf
-
-    - name: Add Bucky to systemd
-      template: src=files/bucky/bucky.service dest=/etc/systemd/system/bucky.service
+    #- name: Update Frontend dependencies
+    #  shell: chdir=/srv/www/frontend _JAVA_OPTIONS="-Xms256m -Xmx512m" sbt update
 
     - name: Start services
-      shell: service $item start && chkconfig $item on
+      shell: systemctl start $item.service && systemctl enable $item.service
       with_items:
         - nginx
-        - denyhosts
-        - bucky
 
     - name: Set iptables
       template: src=files/iptables dest=/etc/sysconfig/iptables
+
+    - name: Restart iptables
+      command: service iptables restart

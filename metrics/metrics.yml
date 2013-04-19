@@ -2,11 +2,13 @@
   user: root
   hosts: $target
   tasks:
+    - include: ../global/global.yml
+
     - name: Update everything
       command: yum update -y
 
     - name: Install packages
-      yum: state=present enablerepo=updates-testing name=$item
+      yum: state=present name=$item
       with_items:
         - httpd # Because WSGI works automatically.
         - python-carbon
@@ -44,3 +46,6 @@
 
     - name: Set iptables
       template: src=files/iptables dest=/etc/sysconfig/iptables
+
+    - name: Restart iptables
+      command: service iptables restart

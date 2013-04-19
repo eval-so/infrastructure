@@ -1,0 +1,34 @@
+- name: Install packages
+  yum: state=present name=$item
+  with_items:
+    - collectd
+    - collectd-ping
+    - collectd-rrdtool
+    - denyhosts
+    - tmux
+    - git
+
+- name: Install bucky and setuptools from testing
+  yum: state=present name=$item enablerepo=updates-testing
+  with_items:
+    - python-bucky
+    - python-setuptools
+
+- name: Configure collectd networking
+  template: src=../global/files/collectd/network.conf dest=/etc/collectd.d/network.conf
+
+- name: Configure Bucky
+  template: src=../global/files/bucky/bucky.conf dest=/etc/bucky/bucky.conf
+
+- name: Add Bucky to systemd
+  template: src=../global/files/bucky/bucky.service dest=/etc/systemd/system/bucky.service
+
+- name: Tell systemd to reload itself
+  command: systemctl daemon-reload
+
+- name: Start services
+  shell: systemctl restart $item.service && systemctl enable $item.service
+  with_items:
+    - denyhosts
+    - collectd
+    - bucky
