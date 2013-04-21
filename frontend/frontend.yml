@@ -27,6 +27,7 @@
         - ruby
         - gcc
         - gcc-c++
+        - Io-*
       tags:
         - bcs-dependencies
 
