@@ -22,6 +22,7 @@ pushd /srv/www/frontend-1
   kill `cat pid`
   ./start -Dhttp.port=9000 &
   echo $! > pid
+  disown `cat pid`
   sleep 2 # So the app has time to make RUNNING_PID which we have to nuke.
   rm /srv/www/RUNNING_PID
 popd
@@ -30,6 +31,7 @@ pushd /srv/www/frontend-2
   kill `cat pid`
   ./start -Dhttp.port=9001 &
   echo $! > pid
+  disown `cat pid`
   sleep 2 # So the app has time to make RUNNING_PID which we have to nuke.
   rm /srv/www/RUNNING_PID
 popd
