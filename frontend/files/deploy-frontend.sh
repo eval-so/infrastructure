@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if [[ `whoami` != 'evalso' ]]; then
+  echo 'Run as evalso user'
+  exit 1
+fi
+
 export _JAVA_OPTIONS="-Xms256m -Xmx512m"
 
 cd /srv/www
