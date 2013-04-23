@@ -53,11 +53,9 @@
 
       # Things added here should be added to 'image' above, and should be removed
       # when a new image is created (usually once per Fedora release).
-    - name: Install deps missing from the image
-      yum: state=present name=$item
-      with_items:
-        - httpie
-        - git
+    #- name: Install deps missing from the image
+    #  yum: state=present name=$item
+    #  with_items:
 
     - name: Create an evalso user
       command: creates=/home/evalso useradd evalso
