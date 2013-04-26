@@ -91,6 +91,7 @@
         - gcc
         - gcc-c++
         - Io-*
+        - php
 
 - name: Tests for minibcs
   user: root
