@@ -16,21 +16,7 @@
         - java-1.7.0-openjdk-devel
         - /root/sbt.rpm
 
-    # These are separate from the above so that they're easier to split off
-    # when BCS runs on a non-frontend node.
-    - name: Install BCS dependencies
-      yum: state=present name=$item
-      with_items:
-        - policycoreutils-sandbox
-        - java-1.7.0-openjdk
-        - scala
-        - ruby
-        - gcc
-        - gcc-c++
-        - Io-*
-        - php
-      tags:
-        - bcs-dependencies
+    - include: ../minibcs/minibcs.yml
 
     - name: Create an evalso user
       command: creates=/home/evalso useradd evalso

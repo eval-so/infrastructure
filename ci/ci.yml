@@ -75,23 +75,13 @@
       shell: chdir=/home/evalso/frontend ./.run-tests.sh
       ignore_errors: yes
 
-- name: Tests for minibcs
+- name: minibcs dependencies
   user: root
   hosts: $target
   tags:
     - minibcs
   tasks:
-    - name: Install BCS dependencies
-      yum: state=present name=$item
-      with_items:
-        - policycoreutils-sandbox
-        - java-1.7.0-openjdk
-        - scala
-        - ruby
-        - gcc
-        - gcc-c++
-        - Io-*
-        - php
+    - include: ../minibcs/minibcs.yml
 
 - name: Tests for minibcs
   user: root

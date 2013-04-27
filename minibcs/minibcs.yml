@@ -1,0 +1,14 @@
+- name: Install BCS dependencies
+  yum: state=present name=$item
+  with_items:
+    - policycoreutils-sandbox
+    - java-1.7.0-openjdk
+    - scala
+    - ruby
+    - gcc
+    - gcc-c++
+    - Io-*
+    - php
+    - perl
+  tags:
+    - bcs-dependencies
