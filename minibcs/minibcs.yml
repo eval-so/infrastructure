@@ -1,6 +1,7 @@
 - name: Install BCS dependencies
   yum: state=present name=$item
   with_items:
+    - minibcs-policy
     - policycoreutils-sandbox
     - java-1.7.0-openjdk
     - scala
