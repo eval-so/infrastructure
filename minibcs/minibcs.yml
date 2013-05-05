@@ -12,5 +12,7 @@
     - php
     - perl
     - factor
+    - chicken-scheme
+    - jruby
   tags:
     - bcs-dependencies
