@@ -11,5 +11,6 @@
     - Io-*
     - php
     - perl
+    - factor
   tags:
     - bcs-dependencies
