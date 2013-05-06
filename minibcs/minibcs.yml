@@ -14,5 +14,6 @@
     - factor
     - chicken-scheme
     - jruby
+    - lci
   tags:
     - bcs-dependencies
