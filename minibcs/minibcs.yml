@@ -15,5 +15,7 @@
     - chicken-scheme
     - jruby
     - lci
+    - python
+    - python3
   tags:
     - bcs-dependencies
