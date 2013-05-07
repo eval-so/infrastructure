@@ -17,5 +17,9 @@
     - lci
     - python
     - python3
+    - lua
+    - mlton
+    - mono-core
+    - fsharp
   tags:
     - bcs-dependencies
