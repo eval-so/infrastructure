@@ -12,7 +12,7 @@
     - php
     - perl
     - factor
-    - chicken-scheme
+    - chicken
     - jruby
     - lci
     - python
