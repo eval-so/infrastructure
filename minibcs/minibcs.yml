@@ -22,5 +22,6 @@
     - mono-core
     - fsharp
     - gnu-smalltalk
+    - ghc
   tags:
     - bcs-dependencies
