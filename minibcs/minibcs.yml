@@ -20,6 +20,7 @@
     - lua
     - mlton
     - mono-core
+    - mono-basic
     - fsharp
     - gnu-smalltalk
     - ghc
