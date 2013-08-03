@@ -24,5 +24,7 @@
     - fsharp
     - gnu-smalltalk
     - ghc
+    - elixir
+    - rust
   tags:
     - bcs-dependencies
