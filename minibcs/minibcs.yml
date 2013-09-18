@@ -1,10 +1,15 @@
+- name: Make sure selinux is enforcing
+  selinux: state=enforcing policy=targeted
+
+- name: Make sure selinux is permanently enforcing
+  lineinfile: dest=/etc/selinux/config regexp=^SELINUX= line=SELINUX=enforcing
+
 - name: Install BCS dependencies
   yum: state=present name=$item
   with_items:
     - minibcs-policy
     - policycoreutils-sandbox
     - java-1.7.0-openjdk
-    - scala
     - ruby
     - gcc
     - gcc-c++
@@ -26,5 +31,6 @@
     - ghc
     - elixir
     - rust
+    - http://scala-lang.org/files/archive/scala-2.10.2.rpm
   tags:
     - bcs-dependencies
