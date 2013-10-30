@@ -31,6 +31,7 @@
     - ghc
     - elixir
     - rust
+    - idris
     - http://scala-lang.org/files/archive/scala-2.10.2.rpm
   tags:
     - bcs-dependencies
