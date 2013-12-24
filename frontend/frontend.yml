@@ -43,3 +43,6 @@
 
     - name: Restart iptables
       command: service iptables restart
+
+    - name: Let nginx use both app servers
+      command: setsebool -P httpd_can_network_connect 1
