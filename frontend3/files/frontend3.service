@@ -1,0 +1,13 @@
+[Unit]
+Description=Eval.so Frontend (snap)
+After=network.target
+Documentation=https://github.com/eval-so/frontend3
+
+[Service]
+ExecStart=/root/.cabal/bin/frontend3
+Type=simple
+User=evalso
+Group=evalso
+
+[Install]
+WantedBy=multi-user.target

@@ -1,3 +1,9 @@
+- name: Configure sshd
+  template: src=../global/files/ssh/sshd_config dest=/etc/ssh/sshd_config
+
+- name: Install our Copr repository
+  template: src=../global/files/evalso.repo dest=/etc/yum.repos.d/evalso.repo
+
 - name: Install packages
   yum: state=present name=$item
   with_items:
@@ -7,7 +13,7 @@
     - denyhosts
     - tmux
     - git
-    - http://yum.eval.so/f18/rpms/evalso-release-1.0.0-3.fc18.noarch.rpm
+    #- http://yum.eval.so/f18/rpms/evalso-release-1.0.0-3.fc18.noarch.rpm
 
 - name: Install bucky and setuptools from testing
   yum: state=present name=$item enablerepo=updates-testing

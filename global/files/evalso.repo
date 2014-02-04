@@ -1,0 +1,7 @@
+[codeblock-evalso]
+name=Copr repo for evalso owned by codeblock
+description=Repository for unofficially packaged http://eval.so/ dependencies. It is my intention that these will one day become official Fedora packages. Most packages here are programming related.
+baseurl=http://copr-be.cloud.fedoraproject.org/results/codeblock/evalso/fedora-$releasever-$basearch/
+skip_if_unavailable=True
+gpgcheck=0
+enabled=1

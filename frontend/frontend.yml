@@ -1,6 +1,6 @@
 - name: Deploy Frontend to a node
   user: root
-  hosts: $target
+  hosts: fe03.eval.so #$target
   tasks:
     - include: ../global/global.yml
 
@@ -27,8 +27,8 @@
     - name: Pull latest Frontend code
       git: repo=git://github.com/eval-so/frontend.git dest=/srv/www/frontend
 
-    - name: Chown Frontend code to evalso
-      command: chown -R evalso.evalso /srv/www/frontend
+    - name: Chown www to evalso
+      command: chown -R evalso.evalso /srv/www
 
     - name: Move deploy script into place
       template: src=files/deploy-frontend.sh dest=/srv/www/deploy-frontend.sh owner=evalso group=evalso mode=0755
