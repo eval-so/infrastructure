@@ -1,0 +1,25 @@
+- name: Configure sshd
+  template: src=../global/files/ssh/sshd_config dest=/etc/ssh/sshd_config
+
+- name: Install our Copr repository
+  file: src=evalso.repo dest=/etc/yum.repos.d/evalso.repo
+
+- name: Install packages
+  yum: state=present name=$item
+  with_items:
+    - collectd
+    - collectd-ping
+    - collectd-rrdtool
+    - denyhosts
+    - tmux
+    - git
+
+- name: Configure collectd networking
+  file: src=collectd/network.conf dest=/etc/collectd.d/network.conf
+
+- name: Start services
+  shell: systemctl restart $item.service && systemctl enable $item.service
+  with_items:
+    - denyhosts
+    - collectd
+    - sshd

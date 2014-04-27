@@ -1,0 +1,7 @@
+- name: Install Cruncher languages
+  hosts: "{{ target }}"
+  accelerate: true
+  gather_facts: False
+  user: root
+  roles:
+  - cruncher

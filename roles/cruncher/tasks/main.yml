@@ -5,7 +5,7 @@
   lineinfile: dest=/etc/selinux/config regexp=^SELINUX= line=SELINUX=enforcing
 
 - name: Install dependencies
-  yum: state=present name=$item
+  yum: state=present name={{ item }}
   with_items:
     - selinux-policy-sandbox
     - cruncher-policy
@@ -35,4 +35,4 @@
     - idris
     - rakudo-star
     - clojure
-    - http://scala-lang.org/files/archive/scala-2.10.2.rpm
+    - scala

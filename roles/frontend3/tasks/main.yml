@@ -1,0 +1,25 @@
+- name: Install Frontend dependencies
+  yum: state=present name=$item
+  with_items:
+  - nginx
+
+- name: Create an evalso user
+  command: creates=/home/evalso useradd evalso
+
+- name: Put nginx proxy config in place
+  template: src=nginx/frontend3.conf dest=/etc/nginx/conf.d/frontend3.conf
+
+- name: Install systemd configuration for frontend3
+  template: src=frontend3.service dest=/etc/systemd/system/frontend3.service owner=root group=root mode=0644
+
+- name: Start services
+  shell: systemctl start $item.service && systemctl enable $item.service
+  with_items:
+  - nginx
+  - frontend3
+
+- name: Set iptables
+  template: src=iptables dest=/etc/sysconfig/iptables
+
+- name: Restart iptables
+  command: systemctl restart iptables 

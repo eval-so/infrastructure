@@ -1,0 +1,36 @@
+- name: Set up a development environment for Cruncher
+  hosts: "{{ target }}"
+  accelerate: true
+  vars_prompt:
+  - name: "install_path"
+    prompt: "What directory should cruncher be cloned to (We will pass this to git, e.g. git clone <...> <YOUR ANSWER>"
+  user: root
+  roles:
+  - global
+  - cruncher
+  tasks:
+#  - name: Add ghc 7.8 repo
+#    command: curl -O /etc/yum.repos.d/ghc78.repo https://copr.fedoraproject.org/coprs/petersen/ghc-7.8/repo/fedora-20-i386/petersen-ghc-7.8-fedora-20-i386.repo
+
+  - name: Add cabal repo
+    command: curl -O /etc/yum.repos.d/cabal.repo http://copr.fedoraproject.org/coprs/petersen/Cabal/repo/fedora-20-i386/petersen-Cabal-fedora-20-i386.repo
+
+  - name: Add cabal-install repo
+    command: curl -O /etc/yum.repos.d/cabal-install.repo http://copr.fedoraproject.org/coprs/petersen/cabal-install/repo/fedora-20-i386/petersen-cabal-install-fedora-20-i386.repo
+
+  - name: Set up dev dependencies
+    yum: state=present name=$item
+    with_items:
+    - ansible # Needed if we want to be able to deploy.
+    - ghc
+    - ghc-Cabal
+    - cabal-install
+
+  - name: Clone cruncher
+    git: repo=git://github.com/eval-so/cruncher.git dest={{ install_path }}
+
+  - name: Set up a cabal sandbox
+    command: chdir={{ install_path }} cabal sandbox init
+
+  - name: Install into sandbox with tests
+    command: chdir={{ install_path }} cabal install --enable-tests
