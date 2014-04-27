@@ -10,7 +10,7 @@
     - selinux-policy-sandbox
     - cruncher-policy
     - policycoreutils-sandbox
-    - java-1.7.0-openjdk
+    - java-1.7.0-openjdk-devel
     - ruby
     - gcc
     - gcc-c++
