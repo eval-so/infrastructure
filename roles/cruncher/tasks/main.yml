@@ -36,3 +36,5 @@
     - rakudo-star
     - clojure
     - scala
+    - coffee-script
+    - nodejs
